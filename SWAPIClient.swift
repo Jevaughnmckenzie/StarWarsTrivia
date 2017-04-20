@@ -17,7 +17,6 @@ enum SWAPI {
         case allPeople
         case search(String)
         case person(Int)
-        
     }
     
     enum VehicleEndPoint {
@@ -30,6 +29,48 @@ enum SWAPI {
         case allStarships
         case search(String)
         case Starships(Int)
+    }
+}
+
+extension SWAPI: Endpoint {
+    var baseURL: String {
+       return "https://swapi.co/api/"
+    }
+    
+    var path: String {
+        var pathString = ""
+        switch self {
+        case .people(let peopleQueryType):
+            pathString += "people/"
+            switch peopleQueryType {
+            case .allPeople:
+                return pathString
+            case .person(let id):
+                return "\(pathString)\(id)/"
+            case .search(let query):
+                return "\(pathString)?search=\(query)"
+            }
+        case .vehicles(let vehicleQueryType):
+            pathString += "vehicles/"
+            switch vehicleQueryType {
+            case .allVehicles:
+                return pathString
+            case .vehicle(let id):
+                return "\(pathString)\(id)/"
+            case .search(let query):
+                return "\(pathString)?search=\(query)"
+            }
+        case .starships(let starshipQueryType):
+            pathString += "starships/"
+            switch starshipQueryType {
+            case .allStarships:
+                return pathString
+            case .Starships(let id):
+                return "\(pathString)\(id)/"
+            case .search(let query):
+                return "\(pathString)?search=\(query)"
+            }
+        }
     }
 }
 
@@ -46,7 +87,6 @@ final class SWAPIClient: APIClient {
     convenience init() {
         self.init(configuration: .default)
     }
-    
     
     
 }

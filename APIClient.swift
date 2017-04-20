@@ -21,14 +21,14 @@ protocol JSONDecodable {
 protocol Endpoint {
     var baseURL: String { get }
     var path: String { get }
-    var searchParameter: [String : AnyObject] { get }
+//    var parameter: [String : AnyObject] { get }
 }
 
 extension Endpoint {
     var queryComponents: [URLQueryItem] {
         var components = [URLQueryItem]()
         
-        for (key, value) in searchParameter {
+        for (key, value) in parameter {
             let queryItem = URLQueryItem(name: key, value: "\(value)")
             components.append(queryItem)
         }
