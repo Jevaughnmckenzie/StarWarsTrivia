@@ -21,14 +21,17 @@ protocol JSONDecodable {
 protocol Endpoint {
     var baseURL: String { get }
     var path: String { get }
-//    var parameter: [String : AnyObject] { get }
+    var parameters: [String : AnyObject]? { get }
 }
 
 extension Endpoint {
-    var queryComponents: [URLQueryItem] {
+    var queryComponents: [URLQueryItem]? {
         var components = [URLQueryItem]()
         
-        for (key, value) in parameter {
+        guard let parameters = parameters else {
+            return nil
+        }
+        for (key, value) in parameters {
             let queryItem = URLQueryItem(name: key, value: "\(value)")
             components.append(queryItem)
         }
@@ -39,7 +42,7 @@ extension Endpoint {
         var components = URLComponents(string: baseURL)!
         components.path = path
         components.queryItems = queryComponents
-        
+        print(components.url)
         let url = components.url!
         return URLRequest(url: url)
     }
@@ -93,6 +96,32 @@ extension APIClient {
         })
         
         return task
+    }
+    
+    func fetch<T: JSONDecodable>(_ request: URLRequest, parse: @escaping (JSON) -> T?, completion: @escaping (APIResult<T>) -> Void) {
+        let task = jsonTask(withRequest: request) { json, response, error in
+            
+            DispatchQueue.main.async {
+                guard let json = json else {
+                    if let error = error {
+                        completion(.failure(error))
+                    } else {
+                        
+                    }
+                    return
+                }
+                
+                if let resource = parse(json) {
+                    completion(.success(resource))
+                } else {
+                    let error = NSError(domain: TRENetworkingErrorDomain, code: UnexpectedResponseError, userInfo: nil)
+                    completion(.failure(error))
+                }
+            }
+        }
+        
+        task.resume()
+        
     }
     
     func fetch<T: JSONDecodable>(_ endpoint: Endpoint, parse: @escaping (JSON) -> [T]?, completion: @escaping (APIResult<[T]>) -> Void) {

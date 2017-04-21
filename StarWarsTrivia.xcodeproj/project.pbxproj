@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A829C9A31EA7CAAC003D9698 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A829C9A21EA7CAAC003D9698 /* AppDelegate.swift */; };
-		A829C9A51EA7CAAC003D9698 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A829C9A41EA7CAAC003D9698 /* MasterViewController.swift */; };
+		A829C9A51EA7CAAC003D9698 /* HomeScreenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A829C9A41EA7CAAC003D9698 /* HomeScreenController.swift */; };
 		A829C9A71EA7CAAC003D9698 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A829C9A61EA7CAAC003D9698 /* DetailViewController.swift */; };
 		A829C9AA1EA7CAAC003D9698 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A829C9A81EA7CAAC003D9698 /* Main.storyboard */; };
 		A829C9AC1EA7CAAC003D9698 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A829C9AB1EA7CAAC003D9698 /* Assets.xcassets */; };
@@ -23,7 +23,7 @@
 /* Begin PBXFileReference section */
 		A829C99F1EA7CAAC003D9698 /* StarWarsTrivia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StarWarsTrivia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A829C9A21EA7CAAC003D9698 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A829C9A41EA7CAAC003D9698 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
+		A829C9A41EA7CAAC003D9698 /* HomeScreenController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenController.swift; sourceTree = "<group>"; };
 		A829C9A61EA7CAAC003D9698 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		A829C9A91EA7CAAC003D9698 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A829C9AB1EA7CAAC003D9698 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -72,7 +72,7 @@
 				A829C9BC1EA7D35B003D9698 /* APIClient.swift */,
 				A8E0924F1EA83A28009ECB22 /* SWAPIClient.swift */,
 				A829C9A21EA7CAAC003D9698 /* AppDelegate.swift */,
-				A829C9A41EA7CAAC003D9698 /* MasterViewController.swift */,
+				A829C9A41EA7CAAC003D9698 /* HomeScreenController.swift */,
 				A829C9A61EA7CAAC003D9698 /* DetailViewController.swift */,
 				A829C9A81EA7CAAC003D9698 /* Main.storyboard */,
 				A829C9AB1EA7CAAC003D9698 /* Assets.xcassets */,
@@ -157,7 +157,7 @@
 				A829C9B71EA7CCDB003D9698 /* People.swift in Sources */,
 				A829C9BD1EA7D35B003D9698 /* APIClient.swift in Sources */,
 				A829C9A71EA7CAAC003D9698 /* DetailViewController.swift in Sources */,
-				A829C9A51EA7CAAC003D9698 /* MasterViewController.swift in Sources */,
+				A829C9A51EA7CAAC003D9698 /* HomeScreenController.swift in Sources */,
 				A829C9B91EA7CFDD003D9698 /* Vehicles.swift in Sources */,
 				A829C9A31EA7CAAC003D9698 /* AppDelegate.swift in Sources */,
 				A829C9BB1EA7D1AE003D9698 /* Starships.swift in Sources */,

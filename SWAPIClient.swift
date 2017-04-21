@@ -8,70 +8,135 @@
 
 import Foundation
 
-enum SWAPI {
+struct BaseURL {
+    let baseURL = "https://swapi.co"
+}
+
+fileprivate struct parameterKeys {
+    static let search = "search"
+    static let page = "page"
+}
+
+enum SWAPI: Endpoint {
     case people(PeopleEndPoint)
     case vehicles(VehicleEndPoint)
     case starships(StarshipEndPoint)
     
-    enum PeopleEndPoint {
-        case allPeople
-        case search(String)
-        case person(Int)
+    
+    
+    enum PeopleEndPoint: Endpoint {
+        case allPeople(page: Int)
+        case search(String?)
+    
+        
+        //MARK: People endpoint
+        
+        var baseURL: String {
+            return BaseURL().baseURL
+        }
+        
+        var path: String {
+            return "/api/people/"
+        }
+        
+        var parameters: [String : AnyObject]? {
+            switch self {
+            case .search(let query):
+                if let query = query {
+                    return [parameterKeys.search : query as AnyObject]
+                }
+            case .allPeople(let pageNumber):
+                return [parameterKeys.page : pageNumber as AnyObject]
+            }
+            return nil
+        }
     }
     
-    enum VehicleEndPoint {
+    enum VehicleEndPoint: Endpoint {
         case allVehicles
-        case search(String)
-        case vehicle(Int)
+        case search(String?)
+        
+        //MARK: Vehicle endpoint
+        
+        var baseURL: String {
+            return BaseURL().baseURL
+        }
+        
+        var path: String {
+            return "/api/vehicle/"
+        }
+        
+        var parameters: [String : AnyObject]? {
+            switch self {
+            case .search(let query):
+                if let query = query {
+                    return [parameterKeys.search : query as AnyObject]
+                }
+            case .allVehicles:
+                return nil
+            }
+            return nil
+        }
     }
     
-    enum StarshipEndPoint {
+    // MARK: SWAPI Endpoint
+    
+    enum StarshipEndPoint: Endpoint {
         case allStarships
-        case search(String)
-        case Starships(Int)
+        case search(String?)
+        
+        //MARK: Starship endpoint
+        
+        var baseURL: String {
+            return BaseURL().baseURL
+        }
+        
+        var path: String {
+            return "/api/starship/"
+        }
+        
+        var parameters: [String : AnyObject]? {
+            switch self {
+            case .search(let query):
+                if let query = query {
+                    return [parameterKeys.search : query as AnyObject]
+                }
+            case .allStarships:
+                return nil
+            }
+            return nil
+        }
     }
-}
-
-extension SWAPI: Endpoint {
+    
     var baseURL: String {
-       return "https://swapi.co/api/"
+       return BaseURL().baseURL
     }
     
     var path: String {
-        var pathString = ""
         switch self {
         case .people(let peopleQueryType):
-            pathString += "people/"
-            switch peopleQueryType {
-            case .allPeople:
-                return pathString
-            case .person(let id):
-                return "\(pathString)\(id)/"
-            case .search(let query):
-                return "\(pathString)?search=\(query)"
-            }
+            return peopleQueryType.path
         case .vehicles(let vehicleQueryType):
-            pathString += "vehicles/"
-            switch vehicleQueryType {
-            case .allVehicles:
-                return pathString
-            case .vehicle(let id):
-                return "\(pathString)\(id)/"
-            case .search(let query):
-                return "\(pathString)?search=\(query)"
-            }
+            return vehicleQueryType.path
         case .starships(let starshipQueryType):
-            pathString += "starships/"
-            switch starshipQueryType {
-            case .allStarships:
-                return pathString
-            case .Starships(let id):
-                return "\(pathString)\(id)/"
-            case .search(let query):
-                return "\(pathString)?search=\(query)"
-            }
+            return starshipQueryType.path
         }
     }
+    
+    var parameters: [String : AnyObject]? {
+        
+        switch self {
+        case .people(let people):
+            return people.parameters
+        case .vehicles(let vehicles):
+            return vehicles.parameters
+        case .starships(let starships):
+            return starships.parameters
+        }
+        
+    }
+    
+    
 }
 
 final class SWAPIClient: APIClient {
@@ -80,6 +145,8 @@ final class SWAPIClient: APIClient {
         return URLSession(configuration: self.configuration)
     }()
     
+    
+    
     init(configuration: URLSessionConfiguration) {
         self.configuration = configuration
     }
@@ -87,6 +154,27 @@ final class SWAPIClient: APIClient {
     convenience init() {
         self.init(configuration: .default)
     }
+    
+    func fetchAllPeople(type: SWAPI.PeopleEndPoint, completion: @escaping (APIResult<[People]>) -> Void) {
+     
+        
+        let endpoint = SWAPI.people(type)
+        
+        fetch(endpoint, parse: { (json) -> [People]? in
+            guard let allPeople = json["results"] as? [[String : AnyObject]] else {
+                return nil
+            }
+            
+            
+            return allPeople.flatMap { peopleList in
+                return People(JSON: peopleList)
+                
+            }
+            
+        }, completion: completion)
+        
+    }
+    
     
     
 }
