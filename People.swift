@@ -25,6 +25,9 @@ struct People {
     let url: String
     let created: String
     let edited: String
+    
+    let summary: [String]
+    let associatedVehicles: [[String]]
 }
 
 extension People: JSONDecodable {
@@ -69,7 +72,8 @@ extension People: JSONDecodable {
         self.created = created
         self.edited = edited
     
-        
+        summary = [birthYear, eyeColor, gender, hairColor, height, mass, skinColor]
+        associatedVehicles = [starships, vehicles]
     }
 }
 

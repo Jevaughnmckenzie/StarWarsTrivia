@@ -8,27 +8,40 @@
 
 import UIKit
 
-class HomeScreenController: UITableViewController {
+class HomeScreenController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource {
 
     var detailViewController: DetailViewController? = nil
+    @IBOutlet weak var moreInfoSelector: UIPickerView!
     
+    @IBOutlet weak var moreInfoTableView: UITableView!
     let swapiClient = SWAPIClient()
     
     var people: [People] = [] {
         didSet {
-            tableView.reloadData()
+            moreInfoSelector.reloadAllComponents()
         }
     }
-
+    
+    var personInfo: [String] = [] {
+        didSet {
+            moreInfoTableView.reloadData()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        moreInfoSelector.delegate = self
+        moreInfoSelector.dataSource = self
+        moreInfoTableView.delegate = self
+        moreInfoTableView.dataSource = self
         
+        showAllPeople()
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        clearsSelectionOnViewWillAppear = splitViewController!.isCollapsed
+        let clearsSelectionOnViewWillAppear = splitViewController!.isCollapsed
         super.viewWillAppear(animated)
     }
 
@@ -42,7 +55,7 @@ class HomeScreenController: UITableViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail" {
-            if let indexPath = tableView.indexPathForSelectedRow {
+            if let indexPath = moreInfoTableView.indexPathForSelectedRow {
                 let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
                 controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
                 controller.navigationItem.leftItemsSupplementBackButton = true
@@ -53,41 +66,66 @@ class HomeScreenController: UITableViewController {
     // MARK: Updating People list
     
     func showAllPeople() {
-        
-        swapiClient.fetchAllPeople(type: .allPeople(page: 1)) { (result) in
-            switch result {
-            case .success(let people):
-                self.people.append(contentsOf: people)
-            case .failure(let error):
-                print(error)
+        var peopleResults: String = ""
+        var pageNumber = 1
+        repeat {
+            swapiClient.fetchAllPeople(type: .allPeople(page: pageNumber)) { (result) in
+                switch result {
+                case .success(let people):
+//                    peopleResults = ""
+                    peopleResults = "\(people)"
+                    self.people.append(contentsOf: people)
+                case .failure(let error):
+                    print(error)
+                }
             }
-        }
+             pageNumber += 1
+            
+        } while pageNumber < 10
     }
-
+    
     // MARK: - Table View
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return people.count
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    
+        return personInfo.count
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
 
-        let person = people[indexPath.row]
-        cell.textLabel?.text = person.name
+        cell.textLabel?.text = personInfo[indexPath.row]
         
         return cell
     }
 
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
 
+    // MARK: - Picker View
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return people.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return people[row].name
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        personInfo = people[row].summary
+    }
+    
     
 
 }

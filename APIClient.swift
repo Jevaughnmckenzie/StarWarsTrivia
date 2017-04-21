@@ -89,6 +89,13 @@ extension APIClient {
                     } catch let error as NSError {
                         completion(nil, HTTPResponse, error)
                     }
+                case 404:
+                    do {
+                        let json = try JSONSerialization.jsonObject(with: data!, options: []) as? [String : AnyObject]
+                        completion(json, HTTPResponse, nil)
+                    } catch let error as NSError {
+                        completion(nil, HTTPResponse, error)
+                    }
                 default:
                     print("Received HTTP response: \(HTTPResponse.statusCode), which was not handled")
                 }
