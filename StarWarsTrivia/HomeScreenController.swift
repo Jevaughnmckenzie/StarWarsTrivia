@@ -11,9 +11,10 @@ import UIKit
 class HomeScreenController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource {
 
     var detailViewController: DetailViewController? = nil
-    @IBOutlet weak var moreInfoSelector: UIPickerView!
     
-    @IBOutlet weak var moreInfoTableView: UITableView!
+    @IBOutlet weak var moreInfoSelector: UIPickerView!
+    weak var moreInfoTableView: UITableView! = UITableView(frame: CGRect(x: 0, y: 60, width: 375, height: 304))
+   
     let swapiClient = SWAPIClient()
     
     var people: [People] = [] {
@@ -32,12 +33,21 @@ class HomeScreenController: UIViewController, UITableViewDelegate, UITableViewDa
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        
+
         moreInfoSelector.delegate = self
         moreInfoSelector.dataSource = self
         moreInfoTableView.delegate = self
         moreInfoTableView.dataSource = self
         
+                view.addSubview(moreInfoTableView)
+        
+        
         showAllPeople()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        setUpTableView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -50,6 +60,19 @@ class HomeScreenController: UIViewController, UITableViewDelegate, UITableViewDa
         // Dispose of any resources that can be recreated.
     }
 
+    // MARK: - Programatic Views
+    
+    func setUpTableView() {
+        moreInfoTableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            moreInfoTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            moreInfoTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            moreInfoTableView.topAnchor.constraint(equalTo: view.topAnchor),
+            moreInfoTableView.bottomAnchor.constraint(equalTo: moreInfoSelector.topAnchor)
+            
+            ])
+    }
+    
     
     // MARK: - Segues
 

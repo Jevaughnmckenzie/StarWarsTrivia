@@ -17,6 +17,7 @@
 		A829C9B91EA7CFDD003D9698 /* Vehicles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A829C9B81EA7CFDD003D9698 /* Vehicles.swift */; };
 		A829C9BB1EA7D1AE003D9698 /* Starships.swift in Sources */ = {isa = PBXBuildFile; fileRef = A829C9BA1EA7D1AE003D9698 /* Starships.swift */; };
 		A829C9BD1EA7D35B003D9698 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A829C9BC1EA7D35B003D9698 /* APIClient.swift */; };
+		A84A88F91EAA885E002D4745 /* InfoTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A84A88F81EAA885E002D4745 /* InfoTableView.swift */; };
 		A8E092501EA83A28009ECB22 /* SWAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E0924F1EA83A28009ECB22 /* SWAPIClient.swift */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +34,7 @@
 		A829C9B81EA7CFDD003D9698 /* Vehicles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Vehicles.swift; path = ../Vehicles.swift; sourceTree = "<group>"; };
 		A829C9BA1EA7D1AE003D9698 /* Starships.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Starships.swift; path = ../Starships.swift; sourceTree = "<group>"; };
 		A829C9BC1EA7D35B003D9698 /* APIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = APIClient.swift; path = ../APIClient.swift; sourceTree = "<group>"; };
+		A84A88F81EAA885E002D4745 /* InfoTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoTableView.swift; sourceTree = "<group>"; };
 		A8E0924F1EA83A28009ECB22 /* SWAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SWAPIClient.swift; path = ../SWAPIClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -75,6 +77,7 @@
 				A829C9A41EA7CAAC003D9698 /* HomeScreenController.swift */,
 				A829C9A61EA7CAAC003D9698 /* DetailViewController.swift */,
 				A829C9A81EA7CAAC003D9698 /* Main.storyboard */,
+				A84A88F81EAA885E002D4745 /* InfoTableView.swift */,
 				A829C9AB1EA7CAAC003D9698 /* Assets.xcassets */,
 				A829C9AD1EA7CAAC003D9698 /* LaunchScreen.storyboard */,
 				A829C9B01EA7CAAC003D9698 /* Info.plist */,
@@ -156,6 +159,7 @@
 			files = (
 				A829C9B71EA7CCDB003D9698 /* People.swift in Sources */,
 				A829C9BD1EA7D35B003D9698 /* APIClient.swift in Sources */,
+				A84A88F91EAA885E002D4745 /* InfoTableView.swift in Sources */,
 				A829C9A71EA7CAAC003D9698 /* DetailViewController.swift in Sources */,
 				A829C9A51EA7CAAC003D9698 /* HomeScreenController.swift in Sources */,
 				A829C9B91EA7CFDD003D9698 /* Vehicles.swift in Sources */,
