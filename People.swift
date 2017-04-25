@@ -9,7 +9,10 @@
 import Foundation
 import UIKit
 
-class People: NSObject, JSONDecodable, UITableViewDelegate, UITableViewDataSource {
+struct Person: JSONDecodable {
+    
+    var description: [String] = ["birthYear", "eyeColor", "gender", "hairColor", "height", "mass", "skinColor"]
+    
     var name: String?
     var birthYear: String?
     var eyeColor: String?
@@ -22,8 +25,8 @@ class People: NSObject, JSONDecodable, UITableViewDelegate, UITableViewDataSourc
     var starships: [String]?
     var vehicles: [String]?
     
-    var summary: [String]
-    var associatedVehicles: [[String]]
+    var summary: [String]?
+    var associatedVehicles: [[String]]?
     
     init(name: String, birthYear: String, eyeColor: String, gender: String, hairColor: String, height: String, mass: String, skinColor: String, homeworld: String, starships: [String], vehicles: [String]) {
         
@@ -42,12 +45,25 @@ class People: NSObject, JSONDecodable, UITableViewDelegate, UITableViewDataSourc
         summary = [birthYear, eyeColor, gender, hairColor, height, mass, skinColor]
         associatedVehicles = [starships, vehicles]
         
-        super.init()
+    }
+    
+    init(){
+        self.name = nil
+        self.birthYear = nil
+        self.eyeColor = nil
+        self.gender = nil
+        self.hairColor = nil
+        self.height = nil
+        self.mass = nil
+        self.skinColor = nil
+        self.homeworld = nil
+        self.starships = nil
+        self.vehicles = nil
     }
     
     // MARK: - JSON Parsing
     
-    convenience required init?(JSON: [String : AnyObject]) {
+    init?(JSON: [String : AnyObject]) {
         
         guard let name = JSON["name"] as? String,
             let birthYear = JSON["birth_year"] as? String,
@@ -72,55 +88,21 @@ class People: NSObject, JSONDecodable, UITableViewDelegate, UITableViewDataSourc
     }
 
     // MARK: - TableView
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return summary.count + associatedVehicles.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let nameCell = tableView.dequeueReusableCell(withIdentifier: "name")!
-        
-        return nameCell
-    }
+//    
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        return summary.count + associatedVehicles.count
+//    }
+//    
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        let nameCell = tableView.dequeueReusableCell(withIdentifier: "name")!
+//        
+//        return nameCell
+//    }
     
     
 }
 
-class TableCell: UITableViewCell {
-    var titleLabel = UILabel()
-    var descriptionLabel = UILabel()
-    
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
-        
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        descriptionLabel.font = UIFont.boldSystemFont(ofSize: 18)
-        
-//        setupViews()
-    }
-    
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-//    func setupViews() {
-//        addSubview(titleLabel)
-//        addSubview(descriptionLabel)
-//        
-//        let views = [
-//            "title" : titleLabel,
-//            "description" : descriptionLabel
-//        ]
-    
-//        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[title]-20-[description]-100-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
-//        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[title]-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
-//        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[description]-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
-//    }
-    
-}
+
 
 
 

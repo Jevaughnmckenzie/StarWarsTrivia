@@ -155,19 +155,19 @@ final class SWAPIClient: APIClient {
         self.init(configuration: .default)
     }
     
-    func fetchAllPeople(type: SWAPI.PeopleEndPoint, completion: @escaping (APIResult<[People]>) -> Void) {
+    func fetchAllPeople(type: SWAPI.PeopleEndPoint, completion: @escaping (APIResult<[Person]>) -> Void) {
      
         
         let endpoint = SWAPI.people(type)
         
-        fetch(endpoint, parse: { (json) -> [People]? in
+        fetch(endpoint, parse: { (json) -> [Person]? in
             guard let allPeople = json["results"] as? [[String : AnyObject]] else {
                 return nil
             }
             
             
-            return allPeople.flatMap { peopleList in
-                return People(JSON: peopleList)
+            return allPeople.flatMap { individualPersonInfo in
+                return Person(JSON: individualPersonInfo)
                 
             }
             
@@ -175,6 +175,28 @@ final class SWAPIClient: APIClient {
         
     }
     
+//    func fetchHomeworld() {}
+//    func fetchVehicles(forPerson person: Person, completion: @escaping (APIResult<[Vehicles]>) -> Void) {
+//        guard let ownedVehicles = person.vehicles else {
+//            return
+//        }
+//        for vehicle in ownedVehicles {
+//            let vehicleURL = URL(string: vehicle)!
+//            let vehicleRequest = URLRequest(url: vehicleURL)
+//
+//            
+//          fetch(vehicleRequest as! Endpoint, parse: { (json) -> Vehicles? in
+//            guard let vehicleName = json["name"] as? [String : String] else {
+//                return nil
+//            }
+//            
+//            return vehicleName
+//          }, completion: completion)
+//        }
+//        
+//       
+//    }
+//    func fetchStarships() {}
     
     
 }

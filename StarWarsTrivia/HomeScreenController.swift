@@ -18,7 +18,7 @@ class HomeScreenController: UIViewController, UITableViewDelegate, UITableViewDa
    
     let swapiClient = SWAPIClient()
     
-    var people: [People] = [] {
+    var people: [Person] = [] {
         didSet {
             moreInfoSelector.reloadAllComponents()
         }
@@ -26,7 +26,7 @@ class HomeScreenController: UIViewController, UITableViewDelegate, UITableViewDa
     
     var personInfo: [String] = [] {
         didSet {
-           moreInfoTableView .reloadData()
+           moreInfoTableView.reloadData()
         }
     }
     
@@ -34,7 +34,8 @@ class HomeScreenController: UIViewController, UITableViewDelegate, UITableViewDa
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        
+        tableViewDesign()
+        moreInfoTableView.register(TableCell.self, forCellReuseIdentifier: "swapiCell")
         
         moreInfoSelector.delegate = self
         moreInfoSelector.dataSource = self
@@ -45,11 +46,10 @@ class HomeScreenController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     override func viewWillLayoutSubviews() {
-//        setUpTableView()
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        let clearsSelectionOnViewWillAppear = splitViewController!.isCollapsed
         super.viewWillAppear(animated)
     }
 
@@ -61,14 +61,7 @@ class HomeScreenController: UIViewController, UITableViewDelegate, UITableViewDa
     // MARK: - Programatic Views
     
     func setUpTableView() {
-        moreInfoTableView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            moreInfoTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            moreInfoTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            moreInfoTableView.topAnchor.constraint(equalTo: view.topAnchor),
-            moreInfoTableView.bottomAnchor.constraint(equalTo: moreInfoSelector.topAnchor)
-            
-            ])
+       
     }
     
     
@@ -103,10 +96,17 @@ class HomeScreenController: UIViewController, UITableViewDelegate, UITableViewDa
              pageNumber += 1
             
         } while pageNumber < 10 // FIXME: get rid of magic number
+        
     }
     
     // MARK: - Table View
 
+    func tableViewDesign() {
+        moreInfoTableView.backgroundView = nil
+        moreInfoTableView.backgroundColor = UIColor.black
+    }
+    
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -117,9 +117,10 @@ class HomeScreenController: UIViewController, UITableViewDelegate, UITableViewDa
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "swapiCell", for: indexPath) as! TableCell
 
-        cell.textLabel?.text = personInfo[indexPath.row]
+        cell.titleLabel.text = Person().description[indexPath.row]
+        cell.descriptionLabel.text = personInfo[indexPath.row]
         
         return cell
     }
@@ -144,7 +145,8 @@ class HomeScreenController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        personInfo = people[row].summary
+        personInfo = people[row].summary!
+//        personInfo.append((people[row].associatedVehicles as? String)!)
     }
     
     
