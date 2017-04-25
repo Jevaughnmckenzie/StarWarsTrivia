@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Vehicles {
+struct Vehicle {
     let name: String
     let model: String
     let vehicleClass: String
@@ -27,7 +27,7 @@ struct Vehicles {
     let edited: String
 }
 
-extension Vehicles: JSONDecodable {
+extension Vehicle: JSONDecodable {
     init?(JSON: [String : AnyObject]) {
         guard let name = JSON["name"] as? String,
         let model = JSON["model"] as? String,

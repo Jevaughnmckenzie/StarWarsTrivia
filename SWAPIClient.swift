@@ -176,26 +176,29 @@ final class SWAPIClient: APIClient {
     }
     
 //    func fetchHomeworld() {}
-//    func fetchVehicles(forPerson person: Person, completion: @escaping (APIResult<[Vehicles]>) -> Void) {
-//        guard let ownedVehicles = person.vehicles else {
-//            return
-//        }
-//        for vehicle in ownedVehicles {
-//            let vehicleURL = URL(string: vehicle)!
-//            let vehicleRequest = URLRequest(url: vehicleURL)
-//
-//            
-//          fetch(vehicleRequest as! Endpoint, parse: { (json) -> Vehicles? in
-//            guard let vehicleName = json["name"] as? [String : String] else {
-//                return nil
-//            }
-//            
-//            return vehicleName
-//          }, completion: completion)
-//        }
-//        
-//       
-//    }
+    func fetchVehicles(forPerson person: Person, completion: @escaping (APIResult<Vehicle>) -> Void) {
+        var vehicles = [Vehicle]()
+        
+        guard let ownedVehicles = person.vehicles else {
+            return
+        }
+        for vehicle in ownedVehicles {
+            guard let vehicleURL = URL(string: vehicle) else {
+                return 
+            }
+            let vehicleRequest = URLRequest(url: vehicleURL)
+
+            
+           fetch(URLrequest: vehicleRequest, parse: { (json) -> Vehicle? in
+                let parsedVehicle = Vehicle(JSON: json)
+            
+            
+            return parsedVehicle
+          }, completion: completion)
+        }
+        
+       
+    }
 //    func fetchStarships() {}
     
     

@@ -8,9 +8,8 @@
 
 import UIKit
 
-class HomeScreenController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource {
+class ResourceController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource {
 
-    var detailViewController: DetailViewController? = nil
     
     @IBOutlet weak var moreInfoSelector: UIPickerView!
     @IBOutlet weak var moreInfoTableView: UITableView!
@@ -24,23 +23,36 @@ class HomeScreenController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
+    var currentSelection: String = ""
     var personInfo: [String] = [] {
         didSet {
            moreInfoTableView.reloadData()
         }
     }
+
+    
+//    var personOwnedVehicle: String = {
+//        
+//    }()
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        
+        
+        moreInfoTableView.register(TableHeader.self, forHeaderFooterViewReuseIdentifier: "header")
         tableViewDesign()
-        moreInfoTableView.register(TableCell.self, forCellReuseIdentifier: "swapiCell")
+        moreInfoTableView.register(InfoCell.self, forCellReuseIdentifier: "swapiCell")
         
         moreInfoSelector.delegate = self
         moreInfoSelector.dataSource = self
         moreInfoTableView.delegate = self
         moreInfoTableView.dataSource = self
+        
+        moreInfoTableView.separatorInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         
         showAllPeople()
     }
@@ -53,11 +65,6 @@ class HomeScreenController: UIViewController, UITableViewDelegate, UITableViewDa
         super.viewWillAppear(animated)
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     // MARK: - Programatic Views
     
     func setUpTableView() {
@@ -67,15 +74,7 @@ class HomeScreenController: UIViewController, UITableViewDelegate, UITableViewDa
     
     // MARK: - Segues
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showDetail" {
-            if let indexPath = moreInfoTableView.indexPathForSelectedRow {
-                let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
-                controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
-                controller.navigationItem.leftItemsSupplementBackButton = true
-            }
-        }
-    }
+    
     
     // MARK: Updating People list
     
@@ -104,8 +103,16 @@ class HomeScreenController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableViewDesign() {
         moreInfoTableView.backgroundView = nil
         moreInfoTableView.backgroundColor = UIColor.black
+        
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return moreInfoTableView.dequeueReusableHeaderFooterView(withIdentifier: "header")
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return currentSelection
+    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -117,7 +124,7 @@ class HomeScreenController: UIViewController, UITableViewDelegate, UITableViewDa
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "swapiCell", for: indexPath) as! TableCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "swapiCell", for: indexPath) as! InfoCell
 
         cell.titleLabel.text = Person().description[indexPath.row]
         cell.descriptionLabel.text = personInfo[indexPath.row]
@@ -145,6 +152,15 @@ class HomeScreenController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        swapiClient.fetchVehicles(forPerson: people[row]) { (result) in
+            switch result {
+            case .success(let vehicle):
+                self.people[row].vehicles?.append(vehicle.name)
+            case .failure(let error):
+                print(error) //FIXME: handle error properly
+            }
+        }
+        currentSelection = people[row].name!
         personInfo = people[row].summary!
 //        personInfo.append((people[row].associatedVehicles as? String)!)
     }

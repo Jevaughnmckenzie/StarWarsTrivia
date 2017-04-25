@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TableCell: UITableViewCell {
+class InfoCell: UITableViewCell {
     var titleLabel = UILabel()
     var descriptionLabel = UILabel()
     
@@ -32,19 +32,19 @@ class TableCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-        func setupViews() {
-            addSubview(titleLabel)
-            addSubview(descriptionLabel)
-    
-            let views = [
-                "title" : titleLabel,
-                "description" : descriptionLabel
-            ]
-    
-            addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[title]-20-[description]-100-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
-            addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[title]-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
-            addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[description]-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
-        }
+    func setupViews() {
+        addSubview(titleLabel)
+        addSubview(descriptionLabel)
+
+        let views = [
+            "title" : titleLabel,
+            "description" : descriptionLabel
+        ]
+
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[title]-20-[description]-100-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[title]-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[description]-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
+    }
     
     
     

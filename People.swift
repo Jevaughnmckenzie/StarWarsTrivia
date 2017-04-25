@@ -42,6 +42,8 @@ struct Person: JSONDecodable {
         self.starships = starships
         self.vehicles = vehicles
         
+        
+        
         summary = [birthYear, eyeColor, gender, hairColor, height, mass, skinColor]
         associatedVehicles = [starships, vehicles]
         

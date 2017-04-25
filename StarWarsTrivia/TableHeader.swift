@@ -20,17 +20,20 @@ class TableHeader: UITableViewHeaderFooterView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    var nameLabel: UILabel = {
+    let nameLabel: UILabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor.white
-        label.font = UIFont.boldSystemFont(ofSize: 25)
+        label.font = UIFont.boldSystemFont(ofSize: 40)
         
         return label
     }()
     
     func setupViews() {
         addSubview(nameLabel)
+        
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-100-[name]-100-|", options: NSLayoutFormatOptions(), metrics: nil, views: ["name" : nameLabel]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[name]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["name" : nameLabel]))
     }
 }
 

@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Starships {
+struct Starship {
     let name: String
     let model: String
     let starshipClass: String
@@ -29,7 +29,7 @@ struct Starships {
     let edited: String
 }
 
-extension Starships: JSONDecodable {
+extension Starship: JSONDecodable {
     init?(JSON: [String : AnyObject]) {
         guard let name = JSON["name"] as? String,
             let model = JSON["model"] as? String,
