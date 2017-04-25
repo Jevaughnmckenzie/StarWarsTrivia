@@ -67,7 +67,7 @@ class People: NSObject, JSONDecodable, UITableViewDelegate, UITableViewDataSourc
                 return nil
         }
         
-        self.init(name: name, birthYear: birthYear, eyeColor: eyeColor, gender: gender, hairColor: hairColor, height: height, mass: mass, skinColor: skinColor, homeworld: homeworld, starships: starships, vehicles: vehicles)
+        self.init(name: name, birthYear: birthYear, eyeColor: eyeColor, gender: gender, hairColor: hairColor, height: height, mass: mass, skinColor: skinColor, homeworld: homeworld, starships: [starships], vehicles: [vehicles])
         
     }
 
@@ -78,8 +78,9 @@ class People: NSObject, JSONDecodable, UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let nameCell = tableView.dequeueReusableCell(withIdentifier: "name")
+        let nameCell = tableView.dequeueReusableCell(withIdentifier: "name")!
         
+        return nameCell
     }
     
     
@@ -97,7 +98,7 @@ class TableCell: UITableViewCell {
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.font = UIFont.boldSystemFont(ofSize: 18)
         
-        setupViews()
+//        setupViews()
     }
     
     
@@ -105,19 +106,19 @@ class TableCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupViews() {
-        addSubview(titleLabel)
-        addSubview(descriptionLabel)
-        
-        let views = [
-            "title" : titleLabel,
-            "description" : descriptionLabel
-        ]
-        
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[title]-20-[description]-100-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[title]-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[description]-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
-    }
+//    func setupViews() {
+//        addSubview(titleLabel)
+//        addSubview(descriptionLabel)
+//        
+//        let views = [
+//            "title" : titleLabel,
+//            "description" : descriptionLabel
+//        ]
+    
+//        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[title]-20-[description]-100-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
+//        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[title]-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
+//        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[description]-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
+//    }
     
 }
 

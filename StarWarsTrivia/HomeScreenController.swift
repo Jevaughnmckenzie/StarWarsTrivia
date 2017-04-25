@@ -13,7 +13,8 @@ class HomeScreenController: UIViewController, UITableViewDelegate, UITableViewDa
     var detailViewController: DetailViewController? = nil
     
     @IBOutlet weak var moreInfoSelector: UIPickerView!
-    weak var moreInfoTableView: UITableView! = UITableView(frame: CGRect(x: 0, y: 60, width: 375, height: 304))
+    @IBOutlet weak var moreInfoTableView: UITableView!
+    
    
     let swapiClient = SWAPIClient()
     
@@ -25,7 +26,7 @@ class HomeScreenController: UIViewController, UITableViewDelegate, UITableViewDa
     
     var personInfo: [String] = [] {
         didSet {
-            moreInfoTableView.reloadData()
+           moreInfoTableView .reloadData()
         }
     }
     
@@ -34,20 +35,17 @@ class HomeScreenController: UIViewController, UITableViewDelegate, UITableViewDa
         // Do any additional setup after loading the view, typically from a nib.
         
         
-
+        
         moreInfoSelector.delegate = self
         moreInfoSelector.dataSource = self
         moreInfoTableView.delegate = self
         moreInfoTableView.dataSource = self
         
-                view.addSubview(moreInfoTableView)
-        
-        
         showAllPeople()
     }
     
     override func viewWillLayoutSubviews() {
-        setUpTableView()
+//        setUpTableView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -99,12 +97,12 @@ class HomeScreenController: UIViewController, UITableViewDelegate, UITableViewDa
                     peopleResults = "\(people)"
                     self.people.append(contentsOf: people)
                 case .failure(let error):
-                    print(error)
+                    print(error) //FIXME: handle error properly
                 }
             }
              pageNumber += 1
             
-        } while pageNumber < 10
+        } while pageNumber < 10 // FIXME: get rid of magic number
     }
     
     // MARK: - Table View
