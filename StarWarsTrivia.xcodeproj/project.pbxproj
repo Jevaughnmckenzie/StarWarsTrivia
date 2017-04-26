@@ -37,6 +37,7 @@
 		A8DF93301EAFE13000EDE290 /* icon-vehicles.png in Resources */ = {isa = PBXBuildFile; fileRef = A8DF93201EAFE13000EDE290 /* icon-vehicles.png */; };
 		A8DF93311EAFE13000EDE290 /* icon-vehicles@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A8DF93211EAFE13000EDE290 /* icon-vehicles@2x.png */; };
 		A8DF93321EAFE13000EDE290 /* icon-vehicles@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A8DF93221EAFE13000EDE290 /* icon-vehicles@3x.png */; };
+		A8DF93341EB0394A00EDE290 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8DF93331EB0394A00EDE290 /* Entities.swift */; };
 		A8E092501EA83A28009ECB22 /* SWAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E0924F1EA83A28009ECB22 /* SWAPIClient.swift */; };
 /* End PBXBuildFile section */
 
@@ -73,6 +74,7 @@
 		A8DF93201EAFE13000EDE290 /* icon-vehicles.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-vehicles.png"; sourceTree = "<group>"; };
 		A8DF93211EAFE13000EDE290 /* icon-vehicles@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-vehicles@2x.png"; sourceTree = "<group>"; };
 		A8DF93221EAFE13000EDE290 /* icon-vehicles@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-vehicles@3x.png"; sourceTree = "<group>"; };
+		A8DF93331EB0394A00EDE290 /* Entities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
 		A8E0924F1EA83A28009ECB22 /* SWAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SWAPIClient.swift; path = ../SWAPIClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -117,6 +119,7 @@
 				A829C9A21EA7CAAC003D9698 /* AppDelegate.swift */,
 				A829C9A61EA7CAAC003D9698 /* ResourceSelectionController.swift */,
 				A829C9A41EA7CAAC003D9698 /* ResourceController.swift */,
+				A8DF93331EB0394A00EDE290 /* Entities.swift */,
 				A8DF930E1EAF99CA00EDE290 /* TableHeader.swift */,
 				A829C9A81EA7CAAC003D9698 /* Main.storyboard */,
 				A84A88F81EAA885E002D4745 /* InfoTableView.swift */,
@@ -243,6 +246,7 @@
 				A829C9BD1EA7D35B003D9698 /* APIClient.swift in Sources */,
 				A84A88F91EAA885E002D4745 /* InfoTableView.swift in Sources */,
 				A8DF93111EAFDF4A00EDE290 /* EntityCell.swift in Sources */,
+				A8DF93341EB0394A00EDE290 /* Entities.swift in Sources */,
 				A829C9A71EA7CAAC003D9698 /* ResourceSelectionController.swift in Sources */,
 				A829C9A51EA7CAAC003D9698 /* ResourceController.swift in Sources */,
 				A829C9B91EA7CFDD003D9698 /* Vehicles.swift in Sources */,

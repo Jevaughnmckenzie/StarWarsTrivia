@@ -11,11 +11,13 @@ import UIKit
 class ResourceController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource {
 
     
+    
     @IBOutlet weak var moreInfoSelector: UIPickerView!
     @IBOutlet weak var moreInfoTableView: UITableView!
     
-   
     let swapiClient = SWAPIClient()
+    var selectedEntity: String?
+   
     
     var people: [Person] = [] {
         didSet {
@@ -41,7 +43,7 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        
+        changeNavBarTitle()
         
         moreInfoTableView.register(TableHeader.self, forHeaderFooterViewReuseIdentifier: "header")
         tableViewDesign()
@@ -54,7 +56,13 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
         
         moreInfoTableView.separatorInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         
-        showAllPeople()
+        switch Entity(rawValue: selectedEntity!)! {
+        case .person:
+            showAllPeople()
+        default:
+            return
+        }
+        
     }
     
     override func viewWillLayoutSubviews() {
@@ -98,6 +106,12 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
         
     }
     
+    // MARK: - NavBarItem
+    
+    func changeNavBarTitle() {
+        navigationItem.title = selectedEntity
+    }
+    
     // MARK: - Table View
 
     func tableViewDesign() {
@@ -119,15 +133,24 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    
-        return personInfo.count
+        switch Entity(rawValue: selectedEntity!)! {
+        case .person:
+            return personInfo.count
+        default:
+            return 0
+        }
+        
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "swapiCell", for: indexPath) as! InfoCell
-
-        cell.titleLabel.text = Person().description[indexPath.row]
-        cell.descriptionLabel.text = personInfo[indexPath.row]
+            switch Entity(rawValue: selectedEntity!)! {
+            case .person:
+                cell.titleLabel.text = Person().description[indexPath.row]
+                cell.descriptionLabel.text = personInfo[indexPath.row]
+            default:
+                return UITableViewCell()
+            }
         
         return cell
     }

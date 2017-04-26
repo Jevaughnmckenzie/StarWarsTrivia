@@ -10,7 +10,11 @@ import UIKit
 
 class ResourceSelectionController: UITableViewController {
 
-    let entities = ["Characters", "Vehicles", "Starships"]
+    let entities = [
+        "Characters",
+        "Vehicles",
+        "Starships"
+    ]
     
 
 
@@ -49,14 +53,37 @@ class ResourceSelectionController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "entityCell", for: indexPath) as! EntityCell
         
-        cell.entityImage.image = #imageLiteral(resourceName: "icon-characters.png")
+        let cellImage = cell.entityImage
+
         cell.entityLabel.text = entities[indexPath.row]
+        switch Entity(rawValue:cell.entityLabel.text!)! {
+        case .person:
+            cellImage.image = #imageLiteral(resourceName: "icon-characters.png")
+        case .vehicle:
+            cellImage.image = #imageLiteral(resourceName: "icon-vehicles.png")
+        case .starship:
+            cellImage.image = #imageLiteral(resourceName: "icon-starships.png")
+        }
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.performSegue(withIdentifier: "moreInfo", sender: indexPath)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "moreInfo" {
+            let controller = segue.destination as! ResourceController
+            let row = (sender as! IndexPath)
+            controller.selectedEntity = (tableView.cellForRow(at: row) as! EntityCell).entityLabel.text!
+            print(controller.selectedEntity)
+            
+        }
     }
 }
 
