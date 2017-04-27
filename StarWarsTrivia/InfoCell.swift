@@ -25,6 +25,7 @@ class InfoCell: UITableViewCell {
         setupViews()
         
         self.backgroundColor = UIColor.black
+        self.isUserInteractionEnabled = false
     }
     
     

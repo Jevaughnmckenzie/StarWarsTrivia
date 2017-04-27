@@ -9,7 +9,7 @@
 import Foundation
 
 struct Starship {
-    let description = ["Model", "Starship Class", "Manufacturer", "Length", "Cost in Credits", "Crew", "Passengers", "Max Atmosphering Speed", "Hyperdrive Rating", "MGLT", "Cargo Capacity", "Consumables", "Pilots"]
+    let description = ["Model", "Starship Class", "Manufacturer", "Length", "Cost in Credits", "Crew", "Passengers", "Max Speed", "Hyperdrive Rating", "MGLT", "Cargo Capacity", "Consumables", "Pilots"]
     
     let name: String?
     let model: String?

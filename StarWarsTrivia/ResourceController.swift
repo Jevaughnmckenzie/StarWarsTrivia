@@ -9,9 +9,9 @@
 import UIKit
 
 class ResourceController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource {
-
     
     
+    @IBOutlet weak var entityName: UILabel!
     @IBOutlet weak var moreInfoSelector: UIPickerView!
     @IBOutlet weak var moreInfoTableView: UITableView!
     
@@ -70,7 +70,7 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
         
         changeNavBarTitle()
         
-        moreInfoTableView.register(TableHeader.self, forHeaderFooterViewReuseIdentifier: "header")
+//        moreInfoTableView.register(TableHeader.self, forHeaderFooterViewReuseIdentifier: "header")
         tableViewDesign()
         moreInfoTableView.register(InfoCell.self, forCellReuseIdentifier: "swapiCell")
         
@@ -264,12 +264,15 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
         switch Entity(rawValue: selectedEntity!)! {
         case .person:
             currentSelection = people[row].name!
+            entityName.text = people[row].name!
             personInfo = people[row].summary!
         case .vehicle:
             currentSelection = vehicles[row].name!
+            entityName.text = vehicles[row].name!
             vehicleInfo = vehicles[row].summary!
         case .starship:
             currentSelection = starships[row].name!
+            entityName.text = starships[row].name!
             starshipInfo = starships[row].summary!
         }
 //        personInfo.append((people[row].associatedVehicles as? String)!)

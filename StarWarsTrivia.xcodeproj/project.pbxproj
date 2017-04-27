@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A810FF7D1EB19B10006EDD2D /* EntityName.swift in Sources */ = {isa = PBXBuildFile; fileRef = A810FF7C1EB19B10006EDD2D /* EntityName.swift */; };
 		A829C9A31EA7CAAC003D9698 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A829C9A21EA7CAAC003D9698 /* AppDelegate.swift */; };
 		A829C9A51EA7CAAC003D9698 /* ResourceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A829C9A41EA7CAAC003D9698 /* ResourceController.swift */; };
 		A829C9A71EA7CAAC003D9698 /* ResourceSelectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A829C9A61EA7CAAC003D9698 /* ResourceSelectionController.swift */; };
@@ -41,6 +42,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A810FF7C1EB19B10006EDD2D /* EntityName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityName.swift; sourceTree = "<group>"; };
 		A829C99F1EA7CAAC003D9698 /* StarWarsTrivia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StarWarsTrivia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A829C9A21EA7CAAC003D9698 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A829C9A41EA7CAAC003D9698 /* ResourceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceController.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 				A8DF930E1EAF99CA00EDE290 /* TableHeader.swift */,
 				A8DF930C1EAF82FA00EDE290 /* InfoCell.swift */,
 				A8DF93101EAFDF4A00EDE290 /* EntityCell.swift */,
+				A810FF7C1EB19B10006EDD2D /* EntityName.swift */,
 				A829C9BC1EA7D35B003D9698 /* APIClient.swift */,
 				A8E0924F1EA83A28009ECB22 /* SWAPIClient.swift */,
 				A829C9A81EA7CAAC003D9698 /* Main.storyboard */,
@@ -242,6 +245,7 @@
 				A829C9B71EA7CCDB003D9698 /* Person.swift in Sources */,
 				A829C9BD1EA7D35B003D9698 /* APIClient.swift in Sources */,
 				A8DF93111EAFDF4A00EDE290 /* EntityCell.swift in Sources */,
+				A810FF7D1EB19B10006EDD2D /* EntityName.swift in Sources */,
 				A8DF93341EB0394A00EDE290 /* Entity.swift in Sources */,
 				A829C9A71EA7CAAC003D9698 /* ResourceSelectionController.swift in Sources */,
 				A829C9A51EA7CAAC003D9698 /* ResourceController.swift in Sources */,
