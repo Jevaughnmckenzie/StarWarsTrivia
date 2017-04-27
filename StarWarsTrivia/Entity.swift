@@ -8,6 +8,11 @@
 
 import Foundation
 
+protocol SWAPIEntity {
+    var name: String? { get }
+    var summary: [String]? { get }
+}
+
 enum Entity: String {
     case person = "Characters"
     case vehicle = "Vehicles"

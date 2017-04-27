@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Vehicle {
+struct Vehicle: SWAPIEntity {
     let description = ["Model", "Class", "Manufacturer", "Length", "Cost", "Crew", "Passengers", "Max Atmosphering Speed", "Cargo Capacity", "Consumables", "Pilots"]
     
     let name: String?

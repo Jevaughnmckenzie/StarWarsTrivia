@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-struct Person: JSONDecodable {
+struct Person: JSONDecodable, SWAPIEntity {
     
     var description: [String] = ["Birth Year", "Eye Color", "Gender", "Hair Color", "Height", "Mass", "Skin Color"]
     

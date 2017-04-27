@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Starship {
+struct Starship: SWAPIEntity {
     let description = ["Model", "Starship Class", "Manufacturer", "Length", "Cost in Credits", "Crew", "Passengers", "Max Speed", "Hyperdrive Rating", "MGLT", "Cargo Capacity", "Consumables", "Pilots"]
     
     let name: String?

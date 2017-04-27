@@ -14,55 +14,32 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var entityName: UILabel!
     @IBOutlet weak var moreInfoSelector: UIPickerView!
     @IBOutlet weak var moreInfoTableView: UITableView!
+    @IBOutlet weak var smallestEntityLabel: UILabel!
+    @IBOutlet weak var largestEntityLabel: UILabel!
     
     let swapiClient = SWAPIClient()
     var selectedEntity: String?
+    var entitesAcendingSize = [JSONDecodable]()
    
     // MARK: Pickerwheel Data
-    var people: [Person] = [] {
-        didSet {
-            moreInfoSelector.reloadAllComponents()
-            moreInfoSelector.selectRow(0, inComponent: 0, animated: false)
-        }
-    }
-    var vehicles: [Vehicle] = [] {
+    var entities: [SWAPIEntity] = [] {
         didSet {
             moreInfoSelector.reloadAllComponents()
         }
     }
-
-    var starships: [Starship] = [] {
-        didSet {
-            moreInfoSelector.reloadAllComponents()
-        }
-    }
+    
 
     var currentSelection: String = ""
     
     // MARK: - TableView Data
-    var personInfo: [String] = [] {
-        didSet {
-           moreInfoTableView.reloadData()
-        }
-    }
-
-    var vehicleInfo: [String] = [] {
-        didSet {
+    
+    var entityInfo: [String] = [] {
+        didSet{
             moreInfoTableView.reloadData()
+            compareSizes()
         }
+        
     }
-    
-    var starshipInfo: [String] = [] {
-        didSet {
-            moreInfoTableView.reloadData()
-        }
-    }
-    
-//    var personOwnedVehicle: String = {
-//        
-//    }()
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,7 +47,7 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
         
         changeNavBarTitle()
         
-//        moreInfoTableView.register(TableHeader.self, forHeaderFooterViewReuseIdentifier: "header")
+        moreInfoTableView.register(TableHeader.self, forHeaderFooterViewReuseIdentifier: "header")
         tableViewDesign()
         moreInfoTableView.register(InfoCell.self, forCellReuseIdentifier: "swapiCell")
         
@@ -92,23 +69,9 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
         
     }
     
-    override func viewWillLayoutSubviews() {
-
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
-
-    // MARK: - Programatic Views
-    
-    func setUpTableView() {
-       
-    }
-    
-    
-    
-    
     
     // MARK: - Updating PickerView lists
     
@@ -118,7 +81,7 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
             swapiClient.fetchAllPeople(type: .allPeople(page: pageNumber)) { (result) in
                 switch result {
                 case .success(let people):
-                    self.people.append(contentsOf: people)
+                    self.entities.append(contentsOf: people as [SWAPIEntity])
                 case .failure(let error):
                     print(error) //FIXME: handle error properly
                 }
@@ -135,7 +98,7 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
             swapiClient.fetchAllVehicles(type: .allVehicles(page: pageNumber)) { (result) in
                 switch result {
                 case .success(let vehicle):
-                    self.vehicles.append(contentsOf: vehicle)
+                    self.entities.append(contentsOf: vehicle as [SWAPIEntity])
                 case .failure(let error):
                     print(error) //FIXME: handle error properly
                 }
@@ -152,7 +115,7 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
             swapiClient.fetchAllStarships(type: .allStarships(page: pageNumber)) { (result) in
                 switch result {
                 case .success(let starships):
-                    self.starships.append(contentsOf: starships)
+                    self.entities.append(contentsOf: starships as [SWAPIEntity])
                 case .failure(let error):
                     print(error) //FIXME: handle error properly
                 }
@@ -190,15 +153,7 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch Entity(rawValue: selectedEntity!)! {
-        case .person:
-            return personInfo.count
-        case .vehicle:
-            return vehicleInfo.count
-        case .starship:
-            return starshipInfo.count
-        }
-        
+        return entityInfo.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -206,14 +161,16 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
             switch Entity(rawValue: selectedEntity!)! {
             case .person:
                 cell.titleLabel.text = Person().description[indexPath.row]
-                cell.descriptionLabel.text = personInfo[indexPath.row]
+                cell.descriptionLabel.text = entityInfo[indexPath.row]
             case .vehicle:
                 cell.titleLabel.text = Vehicle().description[indexPath.row]
-                cell.descriptionLabel.text = vehicleInfo[indexPath.row]
+                cell.descriptionLabel.text = entityInfo[indexPath.row]
             case .starship:
                 cell.titleLabel.text = Starship().description[indexPath.row]
-                cell.descriptionLabel.text = starshipInfo[indexPath.row]
+                cell.descriptionLabel.text = entityInfo[indexPath.row]
             }
+        
+        
         
         return cell
     }
@@ -230,54 +187,99 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        switch Entity(rawValue: selectedEntity!)! {
-        case .person:
-            return people.count
-        case .vehicle:
-            return vehicles.count
-        case .starship:
-            return starships.count
-        }
+        return entities.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        switch Entity(rawValue: selectedEntity!)! {
-        case .person:
-            return people[row].name
-        case .vehicle:
-            return vehicles[row].name
-        case .starship:
-            return starships[row].name
-        }
+        return entities[row].name
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-//        swapiClient.fetchVehicles(forPerson: people[row]) { (result) in
-//            switch result {
-//            case .success(let vehicle):
-//                self.people[row].vehicles?.append(vehicle.name)
-//            case .failure(let error):
-//                print(error) //FIXME: handle error properly
-//            }
-//        }
-        
-        switch Entity(rawValue: selectedEntity!)! {
-        case .person:
-            currentSelection = people[row].name!
-            entityName.text = people[row].name!
-            personInfo = people[row].summary!
-        case .vehicle:
-            currentSelection = vehicles[row].name!
-            entityName.text = vehicles[row].name!
-            vehicleInfo = vehicles[row].summary!
-        case .starship:
-            currentSelection = starships[row].name!
-            entityName.text = starships[row].name!
-            starshipInfo = starships[row].summary!
-        }
+        currentSelection = entities[row].name!
+        entityName.text = entities[row].name!
+        entityInfo = entities[row].summary!
 //        personInfo.append((people[row].associatedVehicles as? String)!)
     }
     
-
+    // MARK: - Size Comparison functions
+    
+    func compareSizes() {
+        /*
+         1)extract name and size information from downloaded json info
+         2)itterate over info to sort by size from smallest to largest
+         3)assign name of entity corresponding to smallest or largest size to the appropriate UILabel
+         */
+        
+        var size1: Int?
+        var size2: Int?
+        var names: [SWAPIEntity]?
+        
+        var intermListOFEntities = [SWAPIEntity]()
+        for entity in entities {
+            switch Entity(rawValue: selectedEntity!)! {
+            case .person:
+                if Int((entity as! Person).height!) != nil {
+                    intermListOFEntities.append(entity)
+                }
+                names = intermListOFEntities.sorted(by: { (entity1, entity2) -> Bool in
+                    size1 = Int((entity1 as! Person).height!)
+                    size2 = Int((entity2 as! Person).height!)
+                     return size1! < size2!
+                })
+            case .vehicle:
+                if Int((entity as! Vehicle).length!) != nil {
+                    intermListOFEntities.append(entity)
+                }
+                names = intermListOFEntities.sorted(by: { (entity1, entity2) -> Bool in
+                    size1 = Int((entity1 as! Vehicle).length!)
+                    size2 = Int((entity2 as! Vehicle).length!)
+                    return size1! < size2!
+                })
+            case .starship:
+                if Int((entity as! Starship).length!) != nil {
+                    intermListOFEntities.append(entity)
+                }
+                names = intermListOFEntities.sorted(by: { (entity1, entity2) -> Bool in
+                    size1 = Int((entity1 as! Starship).length!)
+                    size2 = Int((entity2 as! Starship).length!)
+                    return size1! < size2!
+                })
+            }
+        }
+        
+        smallestEntityLabel.text = names?.first?.name
+        largestEntityLabel.text = names?.last?.name
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
