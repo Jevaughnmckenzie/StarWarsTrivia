@@ -11,7 +11,7 @@ import UIKit
 
 struct Person: JSONDecodable {
     
-    var description: [String] = ["birthYear", "eyeColor", "gender", "hairColor", "height", "mass", "skinColor"]
+    var description: [String] = ["Birth Year", "Eye Color", "Gender", "Hair Color", "Height", "Mass", "Skin Color"]
     
     var name: String?
     var birthYear: String?

@@ -32,7 +32,8 @@ class TableHeader: UITableViewHeaderFooterView {
     func setupViews() {
         addSubview(nameLabel)
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-100-[name]-100-|", options: NSLayoutFormatOptions(), metrics: nil, views: ["name" : nameLabel]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[name]", options: NSLayoutFormatOptions(), metrics: nil, views: ["name" : nameLabel]))
+        nameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[name]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["name" : nameLabel]))
     }
 }

@@ -53,7 +53,7 @@ enum SWAPI: Endpoint {
     }
     
     enum VehicleEndPoint: Endpoint {
-        case allVehicles
+        case allVehicles(page: Int)
         case search(String?)
         
         //MARK: Vehicle endpoint
@@ -63,7 +63,7 @@ enum SWAPI: Endpoint {
         }
         
         var path: String {
-            return "/api/vehicle/"
+            return "/api/vehicles/"
         }
         
         var parameters: [String : AnyObject]? {
@@ -72,8 +72,8 @@ enum SWAPI: Endpoint {
                 if let query = query {
                     return [parameterKeys.search : query as AnyObject]
                 }
-            case .allVehicles:
-                return nil
+            case .allVehicles(let pageNumber):
+                return [parameterKeys.page : pageNumber as AnyObject]
             }
             return nil
         }
@@ -82,7 +82,7 @@ enum SWAPI: Endpoint {
     // MARK: SWAPI Endpoint
     
     enum StarshipEndPoint: Endpoint {
-        case allStarships
+        case allStarships(page: Int)
         case search(String?)
         
         //MARK: Starship endpoint
@@ -92,7 +92,7 @@ enum SWAPI: Endpoint {
         }
         
         var path: String {
-            return "/api/starship/"
+            return "/api/starships/"
         }
         
         var parameters: [String : AnyObject]? {
@@ -101,8 +101,8 @@ enum SWAPI: Endpoint {
                 if let query = query {
                     return [parameterKeys.search : query as AnyObject]
                 }
-            case .allStarships:
-                return nil
+            case .allStarships(let pageNumber):
+                return [parameterKeys.page : pageNumber as AnyObject]
             }
             return nil
         }
@@ -168,6 +168,46 @@ final class SWAPIClient: APIClient {
             
             return allPeople.flatMap { individualPersonInfo in
                 return Person(JSON: individualPersonInfo)
+                
+            }
+            
+        }, completion: completion)
+        
+    }
+    
+    func fetchAllVehicles(type: SWAPI.VehicleEndPoint, completion: @escaping (APIResult<[Vehicle]>) -> Void) {
+        
+        
+        let endpoint = SWAPI.vehicles(type)
+        
+        fetch(endpoint, parse: { (json) -> [Vehicle]? in
+            guard let allVehicles = json["results"] as? [[String : AnyObject]] else {
+                return nil
+            }
+            
+            
+            return allVehicles.flatMap { individualVehicleInfo in
+                return Vehicle(JSON: individualVehicleInfo)
+                
+            }
+            
+        }, completion: completion)
+        
+    }
+    
+    func fetchAllStarships(type: SWAPI.StarshipEndPoint, completion: @escaping (APIResult<[Starship]>) -> Void) {
+        
+        
+        let endpoint = SWAPI.starships(type)
+        
+        fetch(endpoint, parse: { (json) -> [Starship]? in
+            guard let allStarships = json["results"] as? [[String : AnyObject]] else {
+                return nil
+            }
+            
+            
+            return allStarships.flatMap { individualVehicleInfo in
+                return Starship(JSON: individualVehicleInfo)
                 
             }
             

@@ -15,11 +15,11 @@ class InfoCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 18)
-        titleLabel.textColor = UIColor.white
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 14)
+        titleLabel.textColor = UIColor.lightGray
         
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        descriptionLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        descriptionLabel.font = UIFont.boldSystemFont(ofSize: 16)
         descriptionLabel.textColor = UIColor.white
         
         setupViews()
@@ -41,7 +41,8 @@ class InfoCell: UITableViewCell {
             "description" : descriptionLabel
         ]
 
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[title]-20-[description]-100-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[title]", options: NSLayoutFormatOptions(), metrics: nil, views: views))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-150-[description]", options: NSLayoutFormatOptions(), metrics: nil, views: views))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[title]-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[description]-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
     }

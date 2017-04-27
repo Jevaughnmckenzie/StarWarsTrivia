@@ -18,20 +18,45 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
     let swapiClient = SWAPIClient()
     var selectedEntity: String?
    
-    
+    // MARK: Pickerwheel Data
     var people: [Person] = [] {
+        didSet {
+            moreInfoSelector.reloadAllComponents()
+            moreInfoSelector.selectRow(0, inComponent: 0, animated: false)
+        }
+    }
+    var vehicles: [Vehicle] = [] {
         didSet {
             moreInfoSelector.reloadAllComponents()
         }
     }
-    
+
+    var starships: [Starship] = [] {
+        didSet {
+            moreInfoSelector.reloadAllComponents()
+        }
+    }
+
     var currentSelection: String = ""
+    
+    // MARK: - TableView Data
     var personInfo: [String] = [] {
         didSet {
            moreInfoTableView.reloadData()
         }
     }
 
+    var vehicleInfo: [String] = [] {
+        didSet {
+            moreInfoTableView.reloadData()
+        }
+    }
+    
+    var starshipInfo: [String] = [] {
+        didSet {
+            moreInfoTableView.reloadData()
+        }
+    }
     
 //    var personOwnedVehicle: String = {
 //        
@@ -59,8 +84,10 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
         switch Entity(rawValue: selectedEntity!)! {
         case .person:
             showAllPeople()
-        default:
-            return
+        case .vehicle:
+            showAllVehicles()
+        case .starship:
+            showAllStarships()
         }
         
     }
@@ -80,21 +107,17 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     
-    // MARK: - Segues
-
     
     
-    // MARK: Updating People list
+    
+    // MARK: - Updating PickerView lists
     
     func showAllPeople() {
-        var peopleResults: String = ""
         var pageNumber = 1
         repeat {
             swapiClient.fetchAllPeople(type: .allPeople(page: pageNumber)) { (result) in
                 switch result {
                 case .success(let people):
-//                    peopleResults = ""
-                    peopleResults = "\(people)"
                     self.people.append(contentsOf: people)
                 case .failure(let error):
                     print(error) //FIXME: handle error properly
@@ -103,6 +126,40 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
              pageNumber += 1
             
         } while pageNumber < 10 // FIXME: get rid of magic number
+        
+    }
+    
+    func showAllVehicles() {
+        var pageNumber = 1
+        repeat {
+            swapiClient.fetchAllVehicles(type: .allVehicles(page: pageNumber)) { (result) in
+                switch result {
+                case .success(let vehicle):
+                    self.vehicles.append(contentsOf: vehicle)
+                case .failure(let error):
+                    print(error) //FIXME: handle error properly
+                }
+            }
+            pageNumber += 1
+            
+        } while pageNumber < 5 // FIXME: get rid of magic number
+        
+    }
+    
+    func showAllStarships() {
+        var pageNumber = 1
+        repeat {
+            swapiClient.fetchAllStarships(type: .allStarships(page: pageNumber)) { (result) in
+                switch result {
+                case .success(let starships):
+                    self.starships.append(contentsOf: starships)
+                case .failure(let error):
+                    print(error) //FIXME: handle error properly
+                }
+            }
+            pageNumber += 1
+            
+        } while pageNumber < 5 // FIXME: get rid of magic number
         
     }
     
@@ -136,8 +193,10 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
         switch Entity(rawValue: selectedEntity!)! {
         case .person:
             return personInfo.count
-        default:
-            return 0
+        case .vehicle:
+            return vehicleInfo.count
+        case .starship:
+            return starshipInfo.count
         }
         
     }
@@ -148,8 +207,12 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
             case .person:
                 cell.titleLabel.text = Person().description[indexPath.row]
                 cell.descriptionLabel.text = personInfo[indexPath.row]
-            default:
-                return UITableViewCell()
+            case .vehicle:
+                cell.titleLabel.text = Vehicle().description[indexPath.row]
+                cell.descriptionLabel.text = vehicleInfo[indexPath.row]
+            case .starship:
+                cell.titleLabel.text = Starship().description[indexPath.row]
+                cell.descriptionLabel.text = starshipInfo[indexPath.row]
             }
         
         return cell
@@ -167,27 +230,50 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return people.count
+        switch Entity(rawValue: selectedEntity!)! {
+        case .person:
+            return people.count
+        case .vehicle:
+            return vehicles.count
+        case .starship:
+            return starships.count
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return people[row].name
+        switch Entity(rawValue: selectedEntity!)! {
+        case .person:
+            return people[row].name
+        case .vehicle:
+            return vehicles[row].name
+        case .starship:
+            return starships[row].name
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        swapiClient.fetchVehicles(forPerson: people[row]) { (result) in
-            switch result {
-            case .success(let vehicle):
-                self.people[row].vehicles?.append(vehicle.name)
-            case .failure(let error):
-                print(error) //FIXME: handle error properly
-            }
+//        swapiClient.fetchVehicles(forPerson: people[row]) { (result) in
+//            switch result {
+//            case .success(let vehicle):
+//                self.people[row].vehicles?.append(vehicle.name)
+//            case .failure(let error):
+//                print(error) //FIXME: handle error properly
+//            }
+//        }
+        
+        switch Entity(rawValue: selectedEntity!)! {
+        case .person:
+            currentSelection = people[row].name!
+            personInfo = people[row].summary!
+        case .vehicle:
+            currentSelection = vehicles[row].name!
+            vehicleInfo = vehicles[row].summary!
+        case .starship:
+            currentSelection = starships[row].name!
+            starshipInfo = starships[row].summary!
         }
-        currentSelection = people[row].name!
-        personInfo = people[row].summary!
 //        personInfo.append((people[row].associatedVehicles as? String)!)
     }
-    
     
 
 }
