@@ -39,6 +39,7 @@
 		A8DF93321EAFE13000EDE290 /* icon-vehicles@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A8DF93221EAFE13000EDE290 /* icon-vehicles@3x.png */; };
 		A8DF93341EB0394A00EDE290 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8DF93331EB0394A00EDE290 /* Entity.swift */; };
 		A8E092501EA83A28009ECB22 /* SWAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E0924F1EA83A28009ECB22 /* SWAPIClient.swift */; };
+		A8FB77331EB4E5EE00B944D0 /* SWAPIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8FB77321EB4E5EE00B944D0 /* SWAPIError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -77,6 +78,7 @@
 		A8DF93221EAFE13000EDE290 /* icon-vehicles@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-vehicles@3x.png"; sourceTree = "<group>"; };
 		A8DF93331EB0394A00EDE290 /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 		A8E0924F1EA83A28009ECB22 /* SWAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SWAPIClient.swift; path = ../SWAPIClient.swift; sourceTree = "<group>"; };
+		A8FB77321EB4E5EE00B944D0 /* SWAPIError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SWAPIError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,7 @@
 				A829C9A21EA7CAAC003D9698 /* AppDelegate.swift */,
 				A829C9A61EA7CAAC003D9698 /* ResourceSelectionController.swift */,
 				A829C9A41EA7CAAC003D9698 /* ResourceController.swift */,
+				A8FB77321EB4E5EE00B944D0 /* SWAPIError.swift */,
 				A8BAA7A31EB1C50200DF35F5 /* MyPlayground.playground */,
 				A8DF93331EB0394A00EDE290 /* Entity.swift */,
 				A829C9B61EA7CCDB003D9698 /* Person.swift */,
@@ -244,6 +247,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A8DF930D1EAF82FA00EDE290 /* InfoCell.swift in Sources */,
+				A8FB77331EB4E5EE00B944D0 /* SWAPIError.swift in Sources */,
 				A829C9B71EA7CCDB003D9698 /* Person.swift in Sources */,
 				A829C9BD1EA7D35B003D9698 /* APIClient.swift in Sources */,
 				A8DF93111EAFDF4A00EDE290 /* EntityCell.swift in Sources */,

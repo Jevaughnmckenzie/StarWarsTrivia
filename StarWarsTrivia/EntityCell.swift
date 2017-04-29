@@ -57,7 +57,7 @@ class EntityCell: UITableViewCell {
     let entityLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor(red: 156/255.0, green: 255.0, blue: 178/255.0, alpha: 1.0)
+        label.textColor = UIColor(red: 156/255.0, green: 255/255.0, blue: 178/255.0, alpha: 1.0)
         label.font = UIFont.boldSystemFont(ofSize: 20)
         return label
     }()

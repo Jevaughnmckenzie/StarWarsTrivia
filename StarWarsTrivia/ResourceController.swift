@@ -16,6 +16,8 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var moreInfoTableView: UITableView!
     @IBOutlet weak var smallestEntityLabel: UILabel!
     @IBOutlet weak var largestEntityLabel: UILabel!
+    @IBOutlet weak var currencyConversionRateTextField: UITextField!
+    
     
     let swapiClient = SWAPIClient()
     var selectedEntity: String?
@@ -170,6 +172,30 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
                 cell.descriptionLabel.text = entityInfo[indexPath.row]
             }
         
+        cell.metricUnitsButton.addTarget(self, action: #selector(cell.convertToMetricUnits), for: .touchUpInside)
+        cell.englishUnitsButton.addTarget(self, action: #selector(cell.convertToEnglishUnits), for: .touchUpInside)
+        
+        cell.uSDollarButton.addTarget(self, action: #selector(tryConversion(forButton:)), for: .touchUpInside)
+        cell.gCreditsButton.addTarget(self, action: #selector(tryConversion(forButton:)), for: .touchUpInside)
+        
+        if (cell.titleLabel.text == "Length") || (cell.titleLabel.text == "Height") {
+            cell.englishUnitsButton.isHidden = false
+            cell.metricUnitsButton.isHidden = false
+        } else {
+            cell.englishUnitsButton.isHidden = true
+            cell.metricUnitsButton.isHidden = true
+        }
+        
+        if (cell.titleLabel.text == "Cost") {
+            cell.uSDollarButton.isHidden = false
+            cell.gCreditsButton.isHidden = false
+            
+           cell.conversionRate = currencyConversionRateTextField.text 
+        } else {
+            cell.uSDollarButton.isHidden = true
+            cell.gCreditsButton.isHidden = true
+        }
+        
         
         
         return cell
@@ -179,6 +205,8 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
         // Return false if you do not want the specified item to be editable.
         return true
     }
+    
+    
 
     // MARK: - Picker View
     
@@ -198,8 +226,11 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
         currentSelection = entities[row].name!
         entityName.text = entities[row].name!
         entityInfo = entities[row].summary!
-//        personInfo.append((people[row].associatedVehicles as? String)!)
     }
+    
+    // MARK: - Keyboard
+    
+    
     
     // MARK: - Size Comparison functions
     
@@ -250,6 +281,100 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
         smallestEntityLabel.text = names?.first?.name
         largestEntityLabel.text = names?.last?.name
     }
+    
+    //MARK: Helper Methods
+    
+    
+    
+//    func tryGalacticCreditsConversion(inCell cell: InfoCell) {
+//        
+//        do {
+//            try cell.convertToGalacticCredits()
+//        } catch SWAPIError.emptyConversionRate {
+//            
+//            let alertController = UIAlertController(title: "Empty Conversion Rate", message: "Please enter a valid conversion rate", preferredStyle: .alert)
+//            
+//            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+//            alertController.addAction(action)
+//            
+//            present(alertController, animated: true, completion: nil)
+//        } catch SWAPIError.invalidConversionRate {
+//            
+//            let alertController = UIAlertController(title: "Invalid Conversion Rate", message: "Please enter a valid conversion rate", preferredStyle: .alert)
+//            
+//            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+//            alertController.addAction(action)
+//            
+//            present(alertController, animated: true, completion: nil)
+//        } catch {
+//            fatalError(error.localizedDescription)
+//        }
+//    }
+    
+    func tryConversion(forButton button: UIButton) {
+        
+        do {
+            
+            if button.tag == 20 {
+                try convertToUSD(inCell: (button.superview as! InfoCell))
+            } else if button.tag == 10 {
+                try convertToGalacticCredits(inCell: (button.superview as! InfoCell))
+            }
+            
+        } catch SWAPIError.emptyConversionRate {
+            
+            let alertController = UIAlertController(title: "Empty Conversion Rate", message: "Please enter a valid conversion rate", preferredStyle: .alert)
+            
+            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(action)
+            
+            present(alertController, animated: true, completion: nil)
+        } catch SWAPIError.invalidConversionRate {
+            
+            let alertController = UIAlertController(title: "Invalid Conversion Rate", message: "Please enter a valid conversion rate", preferredStyle: .alert)
+            
+            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(action)
+            
+            present(alertController, animated: true, completion: nil)
+        } catch {
+            fatalError(error.localizedDescription)
+        }
+    }
+    
+    func convertToUSD(inCell cell: InfoCell) throws -> Void {
+        
+            guard Double(currencyConversionRateTextField.text!) != nil, let ratio = Double(currencyConversionRateTextField.text!) else {
+                throw SWAPIError.invalidConversionRate
+            }
+            
+            guard (Double(cell.descriptionLabel.text!) != nil) else {
+                throw SWAPIError.emptyConversionRate
+            }
+            
+            let convertedCost = ratio * Double(cell.descriptionLabel.text!)!
+            
+            cell.descriptionLabel.text = String(Int(convertedCost))
+            cell.uSDollarButton.isEnabled = false
+            cell.gCreditsButton.isEnabled = true
+    }
+    
+    func convertToGalacticCredits(inCell cell: InfoCell) throws -> Void {
+        guard Double(currencyConversionRateTextField.text!) != nil, let ratio = Double(currencyConversionRateTextField.text!) else {
+            throw SWAPIError.invalidConversionRate
+        }
+        
+        guard (Double(cell.descriptionLabel.text!) != nil) else {
+            throw SWAPIError.emptyConversionRate
+        }
+        
+        let convertedCost = ratio / Double(cell.descriptionLabel.text!)!
+        
+        cell.descriptionLabel.text = String(Int(convertedCost))
+        cell.uSDollarButton.isEnabled = true
+        cell.gCreditsButton.isEnabled = false
+    }
+
 }
 
 

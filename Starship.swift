@@ -9,7 +9,7 @@
 import Foundation
 
 struct Starship: SWAPIEntity {
-    let description = ["Model", "Starship Class", "Manufacturer", "Length", "Cost in Credits", "Crew", "Passengers", "Max Speed", "Hyperdrive Rating", "MGLT", "Cargo Capacity", "Consumables", "Pilots"]
+    let description = ["Model", "Starship Class", "Manufacturer", "Length", "Cargo Capacity", "Cost", "Crew", "Passengers", "Max Speed", "Hyperdrive Rating", "MGLT", "Consumables", "Pilots"]
     
     let name: String?
     let model: String?
@@ -46,7 +46,7 @@ struct Starship: SWAPIEntity {
         self.consumables = consumables
         self.pilots = pilots
         
-        summary = [name, model, starshipClass, manufacturer, length, cargoCapacity, costInCredits, crew, passengers, maxAtmospheringSpeed, hyperdriveRating, MGLT, consumables]
+        summary = [model, starshipClass, manufacturer, length, cargoCapacity, costInCredits, crew, passengers, maxAtmospheringSpeed, hyperdriveRating, MGLT, consumables]
         
     }
     
