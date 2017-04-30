@@ -344,12 +344,8 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
     
     func convertToUSD(inCell cell: InfoCell) throws -> Void {
         
-            guard Double(currencyConversionRateTextField.text!) != nil, let ratio = Double(currencyConversionRateTextField.text!) else {
+            guard let ratio = Double(currencyConversionRateTextField.text!), ratio > 0 else {
                 throw SWAPIError.invalidConversionRate
-            }
-            
-            guard (Double(cell.descriptionLabel.text!) != nil) else {
-                throw SWAPIError.emptyConversionRate
             }
             
             let convertedCost = ratio * Double(cell.descriptionLabel.text!)!
@@ -360,15 +356,11 @@ class ResourceController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func convertToGalacticCredits(inCell cell: InfoCell) throws -> Void {
-        guard Double(currencyConversionRateTextField.text!) != nil, let ratio = Double(currencyConversionRateTextField.text!) else {
+        guard let ratio = Double(currencyConversionRateTextField.text!), ratio > 0 else {
             throw SWAPIError.invalidConversionRate
         }
         
-        guard (Double(cell.descriptionLabel.text!) != nil) else {
-            throw SWAPIError.emptyConversionRate
-        }
-        
-        let convertedCost = ratio / Double(cell.descriptionLabel.text!)!
+        let convertedCost = Double(cell.descriptionLabel.text!)! / ratio
         
         cell.descriptionLabel.text = String(Int(convertedCost))
         cell.uSDollarButton.isEnabled = true
